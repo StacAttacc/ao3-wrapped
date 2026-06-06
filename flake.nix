@@ -20,7 +20,6 @@
 
             # Node frontend
             nodejs_22
-            nodePackages.npm
 
             # Tooling
             git
