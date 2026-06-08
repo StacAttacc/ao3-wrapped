@@ -37,7 +37,7 @@ NIX_CC='/nix/store/788mx070y81zjlg5ipcl0cra3afviw9k-gcc-wrapper-15.2.0'
 export NIX_CC
 NIX_CC_WRAPPER_TARGET_HOST_x86_64_unknown_linux_gnu='1'
 export NIX_CC_WRAPPER_TARGET_HOST_x86_64_unknown_linux_gnu
-NIX_CFLAGS_COMPILE=' -frandom-seed=phr87hfr3c -isystem /nix/store/lpgczl8hqnjlkicsphcylqfgds7dqc13-python3-3.12.13/include -isystem /nix/store/ac9bklddx1klg92hj7r08xmpky1nwag2-nodejs-22.22.3/include -isystem /nix/store/lpgczl8hqnjlkicsphcylqfgds7dqc13-python3-3.12.13/include -isystem /nix/store/ac9bklddx1klg92hj7r08xmpky1nwag2-nodejs-22.22.3/include'
+NIX_CFLAGS_COMPILE=' -frandom-seed=dybdgmgyjj -isystem /nix/store/lpgczl8hqnjlkicsphcylqfgds7dqc13-python3-3.12.13/include -isystem /nix/store/ac9bklddx1klg92hj7r08xmpky1nwag2-nodejs-22.22.3/include -isystem /nix/store/lpgczl8hqnjlkicsphcylqfgds7dqc13-python3-3.12.13/include -isystem /nix/store/ac9bklddx1klg92hj7r08xmpky1nwag2-nodejs-22.22.3/include'
 export NIX_CFLAGS_COMPILE
 NIX_ENFORCE_NO_NATIVE='1'
 export NIX_ENFORCE_NO_NATIVE
@@ -191,6 +191,11 @@ shellHook='if [ ! -d .venv ]; then
   python -m venv .venv
 fi
 source .venv/bin/activate
+
+if [ ! -d frontend/node_modules ]; then
+  echo "Installing frontend dependencies..."
+  (cd frontend && npm install)
+fi
 '
 export shellHook
 stdenv='/nix/store/jci7gw90lh2vdjaxkb6pzf9xp4v08wzs-stdenv-linux'

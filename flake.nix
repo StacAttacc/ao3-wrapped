@@ -30,6 +30,11 @@
               python -m venv .venv
             fi
             source .venv/bin/activate
+
+            if [ ! -d frontend/node_modules ]; then
+              echo "Installing frontend dependencies..."
+              (cd frontend && npm install)
+            fi
           '';
         };
       });
