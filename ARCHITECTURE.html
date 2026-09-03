@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Clean Architecture Project Structure</title>
+  <style>
+    :root {
+      --bg: #f8f9fa;
+      --text: #1a1a1a;
+      --border: #ddd;
+      --accent-domain: #3498db;
+      --accent-app: #2ecc71;
+      --accent-infra: #e74c3c;
+      --accent-api: #f39c12;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #1e1e1e;
+        --text: #e0e0e0;
+        --border: #444;
+        --accent-domain: #5dade2;
+        --accent-app: #58d68d;
+        --accent-infra: #ec7063;
+        --accent-api: #f5b041;
+      }
+    }
+    body {
+      font-family: 'Monaco', 'Courier New', monospace;
+      background: var(--bg);
+      color: var(--text);
+      padding: 2rem;
+      line-height: 1.5;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    h1, h2 {
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+    h2 {
+      margin-top: 2rem;
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+    }
+    .tree {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.5rem;
+      overflow-x: auto;
+    }
+    .tree-line {
+      margin: 0;
+      white-space: pre-wrap;
+      word-break: break-all;
+      font-size: 0.95rem;
+    }
+    .domain { color: var(--accent-domain); font-weight: 500; }
+    .app { color: var(--accent-app); font-weight: 500; }
+    .infra { color: var(--accent-infra); font-weight: 500; }
+    .api { color: var(--accent-api); font-weight: 500; }
+    .comment {
+      color: #888;
+      font-style: italic;
+      margin-left: 2rem;
+    }
+    .section-desc {
+      margin: 1rem 0;
+      padding: 0.75rem 1rem;
+      border-left: 3px solid var(--border);
+      background: rgba(0,0,0,0.02);
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Clean Architecture Folder Structure</h1>
+    <p>Recommended layout for AO3 Wrapped .NET 10 backend with best practices.</p>
+
+    <h2>Directory Tree</h2>
+    <div class="tree">
+      <pre class="tree-line">backend/
+├── src/
+│   ├── <span class="domain">Backend.Domain/</span>
+│   │   ├── Entities/
+│   │   │   ├── Fic.cs
+│   │   │   ├── User.cs
+│   │   │   └── ReadingHistoryEntry.cs
+│   │   ├── Exceptions/
+│   │   │   ├── DomainException.cs
+│   │   │   ├── FicNotFoundException.cs
+│   │   │   └── UnauthorizedException.cs
+│   │   ├── Repositories/  <span class="comment"># Interfaces only</span>
+│   │   │   ├── IFicRepository.cs
+│   │   │   ├── IUserRepository.cs
+│   │   │   └── IUnitOfWork.cs
+│   │   ├── ValueObjects/
+│   │   │   ├── Email.cs
+│   │   │   └── JwtToken.cs
+│   │   └── Backend.Domain.csproj
+│   │
+│   ├── <span class="app">Backend.Application/</span>
+│   │   ├── Dtos/
+│   │   │   ├── FicDtos.cs
+│   │   │   ├── AuthDtos.cs
+│   │   │   └── WrappedStatsDto.cs
+│   │   ├── Services/  <span class="comment"># Business logic/orchestration</span>
+│   │   │   ├── IAuthService.cs
+│   │   │   ├── AuthService.cs
+│   │   │   ├── IFicService.cs
+│   │   │   ├── FicService.cs
+│   │   │   ├── IWrappedStatsService.cs
+│   │   │   └── WrappedStatsService.cs
+│   │   ├── Mapping/
+│   │   │   └── MappingProfile.cs  <span class="comment"># AutoMapper config</span>
+│   │   ├── Validators/
+│   │   │   ├── CreateFicValidator.cs
+│   │   │   └── RegisterUserValidator.cs
+│   │   └── Backend.Application.csproj
+│   │
+│   ├── <span class="infra">Backend.Infrastructure/</span>
+│   │   ├── Persistence/
+│   │   │   ├── AppDbContext.cs
+│   │   │   ├── Repositories/
+│   │   │   │   ├── FicRepository.cs
+│   │   │   │   ├── UserRepository.cs
+│   │   │   │   └── UnitOfWork.cs
+│   │   │   ├── Migrations/
+│   │   │   │   ├── 20260902_InitialCreate.cs
+│   │   │   │   └── AppDbContextModelSnapshot.cs
+│   │   │   └── Configurations/  <span class="comment"># EF Core model mapping</span>
+│   │   │       ├── FicConfiguration.cs
+│   │   │       └── UserConfiguration.cs
+│   │   ├── Auth/
+│   │   │   ├── JwtTokenProvider.cs
+│   │   │   └── PasswordHasher.cs
+│   │   ├── Scraping/
+│   │   │   ├── AO3Scraper.cs
+│   │   │   └── HttpClientFactory.cs
+│   │   ├── DependencyInjection/
+│   │   │   └── ServiceRegistration.cs  <span class="comment"># DI extension methods</span>
+│   │   └── Backend.Infrastructure.csproj
+│   │
+│   └── <span class="api">Backend.Api/</span>
+│       ├── Program.cs  <span class="comment"># Startup and DI wiring</span>
+│       ├── appsettings.json
+│       ├── appsettings.Development.json
+│       ├── Properties/
+│       │   └── launchSettings.json
+│       ├── Endpoints/  <span class="comment"># Minimal API or Controllers</span>
+│       │   ├── AuthEndpoints.cs
+│       │   ├── FicEndpoints.cs
+│       │   └── WrappedEndpoints.cs
+│       ├── Middleware/
+│       │   ├── ExceptionHandlingMiddleware.cs
+│       │   └── JwtMiddleware.cs
+│       ├── Extensions/
+│       │   └── ServiceCollectionExtensions.cs
+│       └── Backend.Api.csproj
+│
+├── tests/
+│   └── Backend.Tests/
+│       ├── Unit/
+│       │   ├── Services/
+│       │   │   ├── AuthServiceTests.cs
+│       │   │   └── FicServiceTests.cs
+│       │   ├── Repositories/
+│       │   │   └── FicRepositoryTests.cs
+│       │   └── Validators/
+│       │       └── CreateFicValidatorTests.cs
+│       ├── Integration/
+│       │   ├── AuthEndpointTests.cs
+│       │   └── FicEndpointTests.cs
+│       ├── Fixtures/
+│       │   ├── AuthFixture.cs
+│       │   └── DatabaseFixture.cs
+│       └── Backend.Tests.csproj
+│
+├── Backend.sln
+├── Dockerfile
+├── docker-compose.yml
+└── .dockerignore</pre>
+    </div>
+
+    <h2>Layer Breakdown</h2>
+
+    <div class="section-desc">
+      <strong>Domain (Backend.Domain)</strong><br>
+      Pure business logic, zero framework dependencies. Defines:
+      <ul style="margin: 0.5rem 0; padding-left: 1.5rem;">
+        <li>Entities (Fic, User) with validation logic</li>
+        <li>Repository interfaces (contracts)</li>
+        <li>Domain exceptions</li>
+        <li>Value objects (Email, JwtToken)</li>
+      </ul>
+      <em>Nothing in Domain imports EF Core, Postgres, or HTTP types.</em>
+    </div>
+
+    <div class="section-desc">
+      <strong>Application (Backend.Application)</strong><br>
+      Business logic orchestration and use cases. Depends only on Domain:
+      <ul style="margin: 0.5rem 0; padding-left: 1.5rem;">
+        <li>Services (AuthService, FicService, WrappedStatsService)</li>
+        <li>DTOs for API contracts (RegisterDto, FicResponseDto)</li>
+        <li>Input validation (FluentValidation)</li>
+        <li>Mapper config (AutoMapper)</li>
+      </ul>
+      <em>Services call IFicRepository (interface), never DbContext directly.</em>
+    </div>
+
+    <div class="section-desc">
+      <strong>Infrastructure (Backend.Infrastructure)</strong><br>
+      External implementations and data access. Depends on Domain + Application:
+      <ul style="margin: 0.5rem 0; padding-left: 1.5rem;">
+        <li>DbContext and EF Core configuration</li>
+        <li>Repository implementations (IFicRepository → FicRepository)</li>
+        <li>JWT token creation, password hashing</li>
+        <li>AO3 scraper (AngleSharp)</li>
+        <li>DependencyInjection folder with ServiceRegistration extension</li>
+      </ul>
+      <em>All "how it's done" code lives here.</em>
+    </div>
+
+    <div class="section-desc">
+      <strong>Api (Backend.Api)</strong><br>
+      HTTP layer and dependency injection. Depends on all three:
+      <ul style="margin: 0.5rem 0; padding-left: 1.5rem;">
+        <li>Program.cs wires up DI container</li>
+        <li>Endpoints/Controllers map HTTP requests to services</li>
+        <li>Middleware for cross-cutting concerns (exception handling, auth)</li>
+        <li>Configuration (appsettings.json)</li>
+      </ul>
+      <em>Controllers/Endpoints are thin — they call services, never query the database.</em>
+    </div>
+
+    <div class="section-desc">
+      <strong>Tests (Backend.Tests)</strong><br>
+      Unit + integration tests:
+      <ul style="margin: 0.5rem 0; padding-left: 1.5rem;">
+        <li><strong>Unit:</strong> Service logic, validation (mocked dependencies)</li>
+        <li><strong>Integration:</strong> Full endpoint → database flow (real or in-memory DB)</li>
+        <li><strong>Fixtures:</strong> Reusable test data setup</li>
+      </ul>
+    </div>
+
+    <h2>Key Principles</h2>
+    <ul>
+      <li><strong>Dependency rule:</strong> Only point inward (Api → Application → Domain)</li>
+      <li><strong>Interface segregation:</strong> Define IFicRepository in Domain, implement in Infrastructure</li>
+      <li><strong>Single responsibility:</strong> Services orchestrate, Repositories access data, Validators check input</li>
+      <li><strong>No leaky abstractions:</strong> Entity classes don't reference DbContext; DTOs shield domain models from API changes</li>
+      <li><strong>Testability:</strong> All services accept interface dependencies (Moq-friendly)</li>
+    </ul>
+  </div>
+</body>
+</html>
