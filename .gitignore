@@ -1,0 +1,29 @@
+# .NET
+bin/
+obj/
+*.csproj.user
+*.sln.user
+.vs/
+.vscode/
+appsettings.*.local.json
+.env.local
+
+# IDE
+.idea/
+*.swp
+*.swo
+*~
+
+# Node (for frontend)
+node_modules/
+dist/
+.next/
+out/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Misc
+*.log
+.direnv/
