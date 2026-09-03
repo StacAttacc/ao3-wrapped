@@ -18,4 +18,10 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Domain\AO3W.Domain.csproj" />
+    <ProjectReference Include="..\..\src\Application\AO3W.Application.csproj" />
+    <ProjectReference Include="..\..\src\Infrastructure\AO3W.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
