@@ -1,14 +1,27 @@
-namespace AO3W.DomainEntities
+namespace AO3W.Domain.Entities
 {
   public class Fic
   {
-    public long id { get; set; }
-    public long AO3id { get; set; }
-    public string title { get; set; }
-    public string author { get; set; }
-    public string rating { get; set; }
-    public string warning { get; set; }
-    public string category { get; set; }
-    public List<string> fandoms { get; set; }
+    public long Id { get; set; }
+    public long Ao3id { get; set; }
+    public string Title { get; set; }
+    public string Author { get; set; }
+    public string Rating { get; set; }
+    public string Warning { get; set; }
+    public string Category { get; set; }
+    public string Language { get; set; }
+
+    public List<string> Fandoms { get; set; }
+    public List<string> Relationships { get; set; }
+    public List<string> Characters { get; set; }
+    public List<string> AdditionalTags { get; set; }
+
+    public DateTime Published { get; set; }
+    public int Words { get; set; }
+    public int Chapters { get; set; }
+    public int Kudos { get; set; }
+    public int Hits { get; set; }
+    public int Comments { get; set; }
+    public int Bookmarks { get; set; }
   }
 }
