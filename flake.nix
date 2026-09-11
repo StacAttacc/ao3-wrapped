@@ -21,6 +21,12 @@
           DOTNET_ROOT = "${pkgs.dotnetCorePackages.sdk_10_0}";
           DOTNET_CLI_TELEMETRY_OPTOUT = "1";
           DOTNET_NOLOGO = "1";
+
+          shellHook = ''
+            if ! command -v dotnet-ef &> /dev/null; then
+              dotnet tool install --global dotnet-ef
+            fi
+          '';
         };
       });
 }
