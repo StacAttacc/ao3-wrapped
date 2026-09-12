@@ -18,11 +18,12 @@
             nodejs_22
           ];
 
-          DOTNET_ROOT = "${pkgs.dotnetCorePackages.sdk_10_0}";
+          DOTNET_ROOT = "${pkgs.dotnetCorePackages.sdk_10_0}/share/dotnet";
           DOTNET_CLI_TELEMETRY_OPTOUT = "1";
           DOTNET_NOLOGO = "1";
 
           shellHook = ''
+            export PATH="$HOME/.dotnet/tools:$PATH"
             if ! command -v dotnet-ef &> /dev/null; then
               dotnet tool install --global dotnet-ef
             fi
