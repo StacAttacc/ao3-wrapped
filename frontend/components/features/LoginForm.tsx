@@ -1,48 +1,65 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
+import { useModalStore } from '@/lib/stores/modals.ts'
 
 export default function LoginForm() {
+  const { openModal, closeModal, isOpen } = useModalStore()
+  const modalRef = useRef<HTMLDialogElement>(null) 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  
+  useEffect(() => {
+      if (isOpen('login')) {
+        modalRef.current?.showModal()
+      } else {
+        modalRef.current?.close()
+      }
+    }, [isOpen('login')])
+
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-//login attempt
-    document.getElementById('creds_modal')?.close()
+    //login attempt
+    closeModal('login')
   }
 
   return (
     <>
       <button
         className="btn"
-        onClick={() => document.getElementById('creds_modal')?.showModal()}
+        onClick={() => openModal('login')}
       >
         login
       </button>
-      <dialog id="creds_modal" className="modal">
-        <div className="modal-box">
-          <form onSubmit={handleSubmit}>
-            <input
-              type="email"
-              placeholder="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-            <input
-              type="password"
-              placeholder="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            <div className="modal-action">
-              <button onClick={(e) => document.getElementById('creds_modal')?.close()}>login</button>
-            </div>
-          </form>
-        </div>
-      </dialog>
+      { isOpen('login') &&
+        <dialog 
+          ref={modalRef}
+          className="modal"
+        >
+          <div className="modal-box">
+            <form onSubmit={handleSubmit}>
+              <input
+                type="email"
+                placeholder="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+              <input
+                type="password"
+                placeholder="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <div className="modal-action">
+                <button onClick={(e) => closeModal('login')}>login</button>
+              </div>
+            </form>
+          </div>
+        </dialog>
+      }
     </>
   )
 }
