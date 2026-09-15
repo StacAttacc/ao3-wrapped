@@ -10,13 +10,12 @@ export default function LoginForm() {
   const [password, setPassword] = useState('')
   
   useEffect(() => {
-      if (isOpen('login')) {
-        modalRef.current?.showModal()
-      } else {
-        modalRef.current?.close()
-      }
-    }, [isOpen('login')])
-
+    if (isOpen('login')) {
+      modalRef.current?.showModal()
+    } else {
+      modalRef.current?.close()
+    }
+  }, [isOpen('login')])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -33,11 +32,15 @@ export default function LoginForm() {
         login
       </button>
       { isOpen('login') &&
-        <dialog 
+        <dialog
           ref={modalRef}
           className="modal"
+          onClick={() => {if(isOpen('login')) closeModal('login')}}
         >
-          <div className="modal-box">
+          <div
+            className="modal-box"
+            onClick={(e) => e.stopPropagation()}
+          >
             <form onSubmit={handleSubmit}>
               <input
                 type="email"
